@@ -114,9 +114,10 @@ func main() {
 		var apiURL string = os.Getenv("GEMINI_API_URL")
 		var apiKey string = os.Getenv("GEMINI_API_KEY")
 		var prompt string = os.Getenv("PROMPT")
+		var model string = os.Getenv("GEMINI_MODEL")
 
 		payload := map[string]interface{}{
-			"model": "gemini-3.5-flash-lite",
+			"model": model,
 			"input": []interface{}{
 				map[string]interface{}{
 					"type": "text",
