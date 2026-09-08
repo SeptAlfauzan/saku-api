@@ -1,6 +1,6 @@
 # Saku API
 
-Gemini-powered receipt OCR service. Accepts a receipt image (base64), extracts structured transaction data via the Google Gemini API, and returns it as JSON — no database, no storage, pure transformation.
+Backend Service for Saku App (Money tracker) project.
 
 Built with [Go](https://go.dev) and [Fiber](https://gofiber.io), structured as a clean/onion architecture.
 
@@ -13,14 +13,14 @@ Built with [Go](https://go.dev) and [Fiber](https://gofiber.io), structured as a
 
 ## Tech Stack
 
-| Layer        | Technology                                   |
-|--------------|----------------------------------------------|
-| Language     | Go 1.26                                      |
-| HTTP         | Fiber v2                                     |
-| Config       | godotenv (`.env`)                            |
-| External API | Google Gemini (`/v1beta/interactions`)       |
-| Dev tooling  | Air (hot reload)                            |
-| CI/CD        | GitHub Actions → DockerHub                   |
+| Layer        | Technology                             |
+| ------------ | -------------------------------------- |
+| Language     | Go 1.26                                |
+| HTTP         | Fiber v2                               |
+| Config       | godotenv (`.env`)                      |
+| External API | Google Gemini (`/v1beta/interactions`) |
+| Dev tooling  | Air (hot reload)                       |
+| CI/CD        | GitHub Actions → DockerHub             |
 
 ## Getting Started
 
@@ -53,13 +53,13 @@ The server listens on `PORT` (default `3000`).
 
 ### Environment Variables
 
-| Variable         | Description                                          | Default |
-|------------------|------------------------------------------------------|---------|
-| `GEMINI_API_KEY` | Your Google Gemini API key                           | —       |
-| `GEMINI_API_URL` | Gemini interactions endpoint                          | —       |
-| `GEMINI_MODEL`   | Model name, e.g. `gemini-3.5-flash-lite`              | —       |
-| `PROMPT`         | OCR extraction prompt instructing the model           | —       |
-| `PORT`           | HTTP listen port                                      | `3000`  |
+| Variable         | Description                                 | Default |
+| ---------------- | ------------------------------------------- | ------- |
+| `GEMINI_API_KEY` | Your Google Gemini API key                  | —       |
+| `GEMINI_API_URL` | Gemini interactions endpoint                | —       |
+| `GEMINI_MODEL`   | Model name, e.g. `gemini-3.5-flash-lite`    | —       |
+| `PROMPT`         | OCR extraction prompt instructing the model | —       |
+| `PORT`           | HTTP listen port                            | `3000`  |
 
 ### Docker
 
@@ -77,7 +77,7 @@ Sends a receipt image to Gemini OCR and returns structured receipt data.
 **Request body**
 
 | Field       | Type   | Description                        |
-|-------------|--------|------------------------------------|
+| ----------- | ------ | ---------------------------------- |
 | `image`     | string | Base64-encoded image data          |
 | `mime_type` | string | Image MIME type, e.g. `image/jpeg` |
 
@@ -126,10 +126,10 @@ curl -X POST http://localhost:3000/api/v1/ocr \
 
 **Error responses**
 
-| Status | Meaning                                          |
-|--------|--------------------------------------------------|
+| Status | Meaning                                                     |
+| ------ | ----------------------------------------------------------- |
 | `400`  | Invalid body, missing `image`, or no receipt items detected |
-| `500`  | Upstream Gemini call failed                       |
+| `500`  | Upstream Gemini call failed                                 |
 
 ```json
 { "error": "image is required" }
@@ -202,7 +202,7 @@ flowchart TB
     DS --> GEM
     GEM -->|HTTP + x-goog-api-key| GEMAPI
     GEMAPI -->|GeminiResponse JSON| GEM
-    GEM -->|extract Steps[1].Content[0].Text<br/>→ unmarshal Receipt| DS
+    GEM -->|extract Steps&#91;1&#93;.Content&#91;0&#93;.Text<br/>→ unmarshal Receipt| DS
     HND -->|Receipt JSON| C
 
     MAIN -.-> CFG
