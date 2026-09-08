@@ -13,5 +13,8 @@ func NewServer(datasources *datasources.Datasources) *fiber.App {
 	receiptService := services.NewReceiptService(datasources.Remote.GeminiAPI)
 	apiRoutes.Post("/ocr", handlers.OCRReceiptImage(receiptService))
 
+	app.Get("/docs", handlers.DocsIndex)
+	app.Get("/openapi.yaml", handlers.OpenAPISpec)
+
 	return app
 }
