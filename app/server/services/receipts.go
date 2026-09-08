@@ -3,23 +3,25 @@ package services
 import (
 	"context"
 
+	"github.com/septalfauzan/saku-api/app/server/datasources"
+	"github.com/septalfauzan/saku-api/app/server/datasources/remote"
 	"github.com/septalfauzan/saku-api/app/server/domain"
 )
 
 type ReceiptService interface {
-	ExtractReceipt(ctx context.Context) (domain.Receipt, error)
+	ExtractReceipt(ctx context.Context, request remote.OCRRequest) (domain.Receipt, error)
 }
 
 type DefaultReceiptService struct {
-	receipt domain.Receipt
+	geminiAPI remote.GeminiAPI
 }
 
-func NewReceiptService() *DefaultReceiptService {
+func NewReceiptService(ds *datasources.Datasources) *DefaultReceiptService {
 	return &DefaultReceiptService{
-		receipt: domain.Receipt{},
+		geminiAPI: ds.Remote.GeminiAPI,
 	}
 }
 
-func (s *DefaultReceiptService) ExtractReceipt(ctx context.Context) (domain.Receipt, error) {
-	return s.receipt, nil
+func (s *DefaultReceiptService) ExtractReceipt(ctx context.Context, request remote.OCRRequest) (domain.Receipt, error) {
+	return s.geminiAPI.ExtractImageOCR(ctx, request)
 }
