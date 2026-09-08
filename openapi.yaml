@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Saku API
+  description: Receipt extraction API — parse receipts from images via Gemini OCR.
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /api/v1/ocr:
+    post:
+      summary: Extract receipt from image
+      description: Accepts a base64-encoded receipt image, runs Gemini OCR, and returns structured receipt data.
+      operationId: extractReceipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OCRRequest'
+      responses:
+        '201':
+          description: Receipt successfully extracted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Receipt'
+        '400':
+          description: Invalid request body, missing image, or image contains no receipt items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to extract receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    OCRRequest:
+      type: object
+      required:
+        - image
+      properties:
+        image:
+          type: string
+          description: Base64-encoded receipt image
+        mime_type:
+          type: string
+          description: MIME type of the image
+    Receipt:
+      type: object
+      properties:
+        merchant_name:
+          type: string
+          nullable: true
+        transaction_date:
+          type: string
+          nullable: true
+        transaction_time:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+        subtotal:
+          type: number
+          format: double
+          nullable: true
+        tax:
+          type: number
+          format: double
+          nullable: true
+        discount:
+          type: number
+          format: double
+          nullable: true
+        total:
+          type: number
+          format: double
+          nullable: true
+        payment_method:
+          type: string
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiptItem'
+    ReceiptItem:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: number
+          format: double
+        unit_price:
+          type: number
+          format: double
+        total_price:
+          type: number
+          format: double
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
