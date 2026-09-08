@@ -26,7 +26,7 @@ func main() {
 		port = "3000"
 	}
 
-	app := server.NewServer(ds)
+	app := server.NewServer(ds, &conf)
 
 	log.Fatal(app.Listen(":" + port))
 }
