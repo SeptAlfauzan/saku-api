@@ -9,11 +9,6 @@ import (
 	"github.com/septalfauzan/saku-api/app/server/domain"
 )
 
-type OCRRequest struct {
-	ImageBase64 string `json:"image"`
-	MimeType    string `json:"mime_type"`
-}
-
 type GeminiOCRRequest struct {
 	Model string        `json:"model"`
 	Input []GeminiInput `json:"input"`
@@ -29,7 +24,7 @@ type GeminiInput struct {
 type GeminiAPI interface {
 	ExtractImageOCR(
 		ctx context.Context,
-		request OCRRequest,
+		request domain.OCRRequest,
 	) (domain.Receipt, error)
 }
 
@@ -56,7 +51,7 @@ func NewGeminiAPI(
 
 func (api *DefaultGeminiAPI) ExtractImageOCR(
 	ctx context.Context,
-	request OCRRequest,
+	request domain.OCRRequest,
 ) (domain.Receipt, error) {
 	payload := GeminiOCRRequest{
 		Model: api.ocrModel,

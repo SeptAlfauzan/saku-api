@@ -1,17 +1,20 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/septalfauzan/saku-api/app/server/domain"
-	"github.com/septalfauzan/saku-api/app/server/datasources/remote"
 	"github.com/septalfauzan/saku-api/app/server/services"
 )
 
 func OCRReceiptImage(service services.ReceiptService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var input remote.OCRRequest
+		ip := c.IP()
+
+		fmt.Println("Client IP:", ip)
+		var input domain.OCRRequest
 
 		if err := c.BodyParser(&input); err != nil {
 			return sendError(

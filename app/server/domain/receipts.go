@@ -1,5 +1,12 @@
 package domain
 
+import "context"
+
+// ReceiptExtractor extracts structured receipt data from an image.
+type ReceiptExtractor interface {
+	ExtractImageOCR(ctx context.Context, request OCRRequest) (Receipt, error)
+}
+
 // FORMATTED RESPONSE
 type Receipt struct {
 	MerchantName    *string       `json:"merchant_name"`

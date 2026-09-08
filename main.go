@@ -14,7 +14,12 @@ func main() {
 		log.Println("Warning: .env file not found", err)
 	}
 
-	ds := datasources.NewDatasources(&conf)
+	ds := datasources.NewDatasources(
+		conf.GeminiAPIKey,
+		conf.GeminiAPIUrl,
+		conf.GeminiOCRPrompt,
+		conf.GeminiOCRModel,
+	)
 
 	port := conf.Port
 	if port == "" {
