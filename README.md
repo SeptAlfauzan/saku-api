@@ -70,6 +70,11 @@ docker run --env-file .env -p 3000:3000 saku-api
 
 ## API
 
+### API Documentation
+
+Interactive Swagger UI docs are available at [`/docs`](http://localhost:3000/docs)
+when the server is running. The raw OpenAPI spec is served at `/openapi.yaml`.
+
 ### `POST /api/v1/ocr`
 
 Sends a receipt image to Gemini OCR and returns structured receipt data.
