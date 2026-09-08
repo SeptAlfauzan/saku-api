@@ -1,4 +1,4 @@
-module github.com/septalfauzan/saku-be
+module github.com/septalfauzan/saku-api
 
 go 1.26.5
 
