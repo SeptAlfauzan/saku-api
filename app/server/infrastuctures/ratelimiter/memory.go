@@ -75,6 +75,11 @@ func (m *MemoryLimiter) Stop() {
 }
 
 func (m *MemoryLimiter) sweep() {
+	// NewTicker panics on non-positive interval; a zero window also means
+	// no cleanup is needed.
+	if m.window <= 0 {
+		return
+	}
 	t := time.NewTicker(m.window)
 	defer t.Stop()
 	for {
