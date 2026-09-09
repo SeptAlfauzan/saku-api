@@ -33,6 +33,7 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates
 
 COPY --from=builder /app/server .
+COPY --from=builder /app/openapi.yaml .
 
 # Your Fiber port
 EXPOSE 3000
