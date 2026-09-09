@@ -30,20 +30,16 @@ func intEnv(key string, def int) int {
 }
 
 func LoadConfig() (Config, error) {
-	err := godotenv.Load()
-	if err != nil {
-		return Config{}, err
-	}
+	// Missing .env isn't fatal: fall back to OS env vars and defaults below.
+	_ = godotenv.Load()
 
-	config := Config{
-		GeminiAPIKey:    os.Getenv("GEMINI_API_KEY"),
-		GeminiAPIUrl:    os.Getenv("GEMINI_API_URL"),
-		GeminiOCRPrompt: os.Getenv("PROMPT"),
-		GeminiOCRModel:  os.Getenv("GEMINI_MODEL"),
-		Port:            os.Getenv("PORT"),
-		RateLimit:       intEnv("RATE_LIMIT", 5),
-		RateLimitWindowMs: intEnv(
-			"RATE_LIMIT_WINDOW_MS", 60000),
-	}
-	return config, nil
+	return Config{
+		GeminiAPIKey:      os.Getenv("GEMINI_API_KEY"),
+		GeminiAPIUrl:      os.Getenv("GEMINI_API_URL"),
+		GeminiOCRPrompt:   os.Getenv("PROMPT"),
+		GeminiOCRModel:    os.Getenv("GEMINI_MODEL"),
+		Port:              os.Getenv("PORT"),
+		RateLimit:         intEnv("RATE_LIMIT", 5),
+		RateLimitWindowMs: intEnv("RATE_LIMIT_WINDOW_MS", 60000),
+	}, nil
 }
